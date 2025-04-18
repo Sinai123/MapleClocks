@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maplestory Interval Timer</title>
+    
+  <!-- Favicon for desktop shortcuts -->
+  <link rel="icon" href="maplestory.ico" type="image/x-icon" />
+
+  <!-- App icon for iOS home screen -->
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Web App manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Mobile app meta settings -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Maple Timer">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1e1e2f" />
+  <style>
+    html, body {
+		height: 98%;
+	}
+	
+	body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e2f;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      transition: background-image 0.5s ease-in-out;
+    }
+	
+	* {
+		cursor: url('cursors/maplepoint.cur'), auto !important;
+	}
+
+	/* Prevent cursor from changing over buttons/selects/etc. */
+	button, select, input, textarea, label {
+		cursor: url('cursors/maplepoint.cur'), auto !important;
+	}
+	
+	/* Click animation cursor */
+	.clicked, .clicked *, html.clicked, html.clicked * {
+		cursor: url('cursors/maplepointlow.cur'), auto !important;
+	}
+
+    #bg-selector {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .button-group {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: white;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+	
+	button1 {
+      padding: 5px 10px;
+      margin: 5px 2.5px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: white;
+      transition: background-color 0.3s;
+    }
+
+    button1:hover {
+      background-color: #2563eb;
+    }
+
+    .timers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .skill {
+      background-color: rgba(45, 45, 68, 0.85);
+      padding: 20px;
+      border-radius: 12px;
+      width: 260px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .skill h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .timer-display {
+      font-size: 2rem;
+      margin: 10px 0;
+    }
+
+    .dropdown {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+    <select id="bg-selector">
+	<option value="backgrounds/Lith Harbor.png">Lith Harbor</option>
+	<option value="backgrounds/Maple Tree.png">Maple Tree</option>
+	<option value="backgrounds/Florina Beach.png">Florina Beach</option>
+	<option value="backgrounds/Chimney Trees.png">Chimney Trees</option>
+	<option value="backgrounds/North Rocky Mountain.png">North Rocky Mountain</option>
+	<option value="backgrounds/Nautilus Harbor.png">Nautilus Harbor</option>
+    <option value="backgrounds/Cave of Life.png">Cave of Life</option>
+	<option value="backgrounds/Sleepywood.png">Sleepywood</option>
+	<option value="backgrounds/Cursed Temple.png">Cursed Temple</option>
+	<option value="backgrounds/Deep Sea Gorge.png">Deep Sea Gorge</option>
+	<option value="backgrounds/Temple of Time.png">Temple of Time</option>
+	<option value="backgrounds/Path of Time.png">Path of Time</option>
+	<option value="backgrounds/Ride to Orbis.png">Ride to Orbis</option>
+	<option value="backgrounds/El Nath.png">El Nath</option>
+	<option value="backgrounds/Ludibrium.png">Ludibrium</option>
+	<option value="backgrounds/Eos Tower.png">Eos Tower</option>
+	<option value="backgrounds/Leafre.png">Leafre</option>
+	<option value="backgrounds/Magatia.png">Magatia</option>
+	<option value="backgrounds/Nihal Desert.png">Nihal Desert</option>
+	<option value="backgrounds/Peach Farm.png">Peach Farm</option>
+	<option value="backgrounds/Midsummer Night's Forest.png">Midsummer Night's Forest</option>
+	<option value="backgrounds/Ellin Forest.png">Ellin Forest</option>
+	<option value="backgrounds/Ereve.png">Ereve</option>
+	<option value="backgrounds/Edelstein.png">Edelstein</option>
+	<option value="backgrounds/Vanishing Journey.png">Vanishing Journey</option>
+	<option value="backgrounds/Lachelein.png">Lachelein</option>
+	<option value="backgrounds/Grove of the Spirit Tree.png">Grove of the Spirit Tree</option>
+	<option value="backgrounds/Heart of the Forest.png">Heart of the Forest</option>
+    <option value="backgrounds/Coral Forest.png">Coral Forest</option>
+	<option value="backgrounds/Living Spring.png">Living Spring</option>
+	<option value="backgrounds/Sellas.png">Sellas</option>
+	<option value="backgrounds/Barrier Between Worlds.png">Barrier Between Worlds</option>
+	<option value="backgrounds/Royal Library.png">Royal Library</option>
+	<option value="backgrounds/Happyville.png">Happyville</option>
+  </select>
+
+  <h1>Maplestory Interval Timer</h1>
+
+  <div class="button-group">
+    <button onclick="addSkill()">+ Add Skill Timer</button>
+    <button onclick="clearAll()">Clear All Timers</button>
+  </div>
+
+  <div class="timers" id="timers"></div>
+
+  <!-- Audio Elements -->
+  <audio id="Bonk" src="sounds/Bonk.mp3" preload="auto"></audio>
+  <audio id="Bubbles" src="sounds/Bubbles.mp3" preload="auto"></audio>
+  <audio id="Glitter" src="sounds/Glitter.mp3" preload="auto"></audio>
+  <audio id="Level Up Alarm" src="sounds/Level Up Alarm.mp3" preload="auto"></audio>
+  <audio id="Level Up" src="sounds/Level Up.mp3" preload="auto"></audio>
+  <audio id="Looting" src="sounds/Looting.mp3" preload="auto"></audio>
+  <audio id="Pet Level Up" src="sounds/Pet Level Up.mp3" preload="auto"></audio>
+  <audio id="Quest Alert" src="sounds/Quest Alert.mp3" preload="auto"></audio>
+  <audio id="Quest Chime" src="sounds/Quest Chime.mp3" preload="auto"></audio>
+  <audio id="Select Map" src="sounds/Select Map.mp3" preload="auto"></audio>
+  <audio id="Zap" src="sounds/Zap.mp3" preload="auto"></audio>
+
+  <script>
+    const bgSelector = document.getElementById('bg-selector');
+    const timersContainer = document.getElementById("timers");
+
+    const savedBg = localStorage.getItem('background');
+    if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
+    bgSelector.value = savedBg || "";
+
+    bgSelector.addEventListener('change', () => {
+      const url = bgSelector.value;
+      document.body.style.backgroundImage = url ? `url('${url}')` : "";
+      localStorage.setItem('background', url);
+    });
+
+    let skills = JSON.parse(localStorage.getItem("skills")) || [];
+
+    function saveSkills() {
+      localStorage.setItem("skills", JSON.stringify(skills));
+    }
+
+    function addSkill(data) {
+      const name = data?.name || prompt("Enter skill name:");
+      const cooldown = data?.cooldown || parseInt(prompt("Enter cooldown in seconds:"), 10);
+      const sound = data?.sound || "beep";
+      if (!name || isNaN(cooldown)) return;
+
+      const skill = { name, cooldown, sound };
+      skills.push(skill);
+      saveSkills();
+
+      renderSkill(skill);
+    }
+
+    function renderSkill(skill) {
+      const { name } = skill;
+      let cooldown = skill.cooldown;
+      let sound = skill.sound;
+
+      const skillDiv = document.createElement("div");
+      skillDiv.className = "skill";
+
+      const title = document.createElement("h3");
+      title.textContent = name;
+      skillDiv.appendChild(title);
+
+      const timerText = document.createElement("div");
+      timerText.className = "timer-display";
+      timerText.textContent = cooldown + "s";
+      skillDiv.appendChild(timerText);
+
+      let timeLeft = cooldown;
+      let interval = null;
+
+      const getSoundElement = () => document.getElementById(sound) || document.getElementById("Bonk");
+
+      const startBtn = document.createElement("button");
+      startBtn.textContent = "Start";
+      startBtn.onclick = () => {
+        if (interval) return;
+        interval = setInterval(() => {
+          timeLeft--;
+          if (timeLeft <= 0) {
+            getSoundElement().play();
+            timeLeft = cooldown;
+          }
+          timerText.textContent = timeLeft + "s";
+        }, 1000);
+      };
+      skillDiv.appendChild(startBtn);
+
+      const resetBtn = document.createElement("button");
+      resetBtn.textContent = "Reset";
+      resetBtn.onclick = () => {
+        clearInterval(interval);
+        interval = null;
+        timeLeft = cooldown;
+        timerText.textContent = cooldown + "s";
+      };
+      skillDiv.appendChild(resetBtn);
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.onclick = () => {
+        const newCooldown = parseInt(prompt("New cooldown (seconds):", cooldown), 10);
+        if (!isNaN(newCooldown)) {
+          cooldown = newCooldown;
+          skill.cooldown = newCooldown;
+          timeLeft = newCooldown;
+          timerText.textContent = timeLeft + "s";
+          saveSkills();
+        }
+      };
+      skillDiv.appendChild(editBtn);
+
+      const soundDropdown = document.createElement("select");
+      soundDropdown.className = "dropdown";
+      ["Bonk", "Bubbles", "Glitter", "Level Up Alarm", "Level Up", "Pet Level Up", "Looting", "Quest Alert", "Quest Chime", "Select Map", "Zap"].forEach(snd => {
+        const option = document.createElement("option");
+        option.value = snd;
+        option.textContent = snd.charAt(0).toUpperCase() + snd.slice(1);
+        if (snd === sound) option.selected = true;
+        soundDropdown.appendChild(option);
+      });
+
+      soundDropdown.onchange = (e) => {
+        sound = e.target.value;
+        skill.sound = sound;
+        saveSkills();
+      };
+
+      skillDiv.appendChild(soundDropdown);
+
+      const testBtn = document.createElement("button1");
+      testBtn.textContent = "Test Sound";
+      testBtn.onclick = () => {
+        getSoundElement().play();
+      };
+      skillDiv.appendChild(testBtn);
+
+      timersContainer.appendChild(skillDiv); 
+    } 
+
+    function clearAll() {
+      skills = [];
+      saveSkills();
+      timersContainer.innerHTML = "";
+    }
+
+    window.onload = () => {
+      skills.forEach(renderSkill);
+    };
+	
+	window.onload = () => {
+		skills.forEach(renderSkill);
+
+		// Set default volume for all sounds
+		document.querySelectorAll("audio").forEach(audio => {
+			audio.volume = 0.1; // adjust volume here (0.0 - 1.0)
+		});
+	};	  
+	// Cursor click effect
+	document.body.addEventListener("mousedown", () => {
+		document.documentElement.classList.add("clicked"); // <html>
+		document.body.classList.add("clicked");			   // <body>
+		setTimeout(() => {
+			document.documentElement.classList.remove("clicked");
+			document.body.classList.remove("clicked");
+	}, 150); // Change back after 150ms
+});
+  </script>
+</body>
+</html>

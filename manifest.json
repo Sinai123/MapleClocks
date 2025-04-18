@@ -1,0 +1,16 @@
+{
+  "name": "Maplestory Timer",
+  "short_name": "Timer",
+  "description": "Maplestory Skill Timer",
+  "icons": [
+    {
+      "src": "Maplestory Skill Timer/maplestory.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1e1e2f",
+  "theme_color": "#3b82f6"
+}
