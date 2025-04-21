@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maplestory Interval Timer</title>
+  <link rel="icon" href="maplestory.ico" type="image/x-icon" />
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --bg-dark: #1e1e2f;
+      --card-bg: rgba(45, 45, 68, 0.85);
+      --text-light: #ffffff;
+      --danger: #ef4444;
+    }
+
+	html, body {
+	  margin: 0;
+	  padding: 0;
+	  height: 100%;
+	  font-family: 'Segoe UI', sans-serif;
+	  background-color: var(--bg-dark);
+	  background-image: none;
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  background-size: cover;
+	  background-attachment: fixed;
+	  color: var(--text-light);
+	  overflow: auto;
+	}
+
+	.top-bar {
+	  display: flex;
+	  justify-content: center; /* This centers all elements horizontally */
+	  align-items: center;
+	  background: rgba(0, 0, 0, 0.5);
+	  padding: 15px 20px;
+	  flex-wrap: wrap;
+	  position: sticky;
+	  top: 0;
+	  z-index: 10;
+	}
+
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      flex: 1;
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+	  margin-left: 0; /* default for mobile */
+    }
+
+    #bg-selector {
+      background-color: #2c2c40;
+      color: white;
+      padding: 6px 0px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+	.button-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	  align-items: center;
+	  padding: 15px 10px;
+	  gap: 10px;
+	  flex-direction: row;
+	}
+
+    .button-group > div {
+      margin-top: 8px;
+    }
+	
+	.top-buttons {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	  gap: 10px;
+	}
+
+	.mute-toggle {
+	  margin-top: 10px;
+	  text-align: center;
+	}
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .small-button {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      transform: scale(0.9);
+    }
+
+    .timers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .skill {
+      background-color: var(--card-bg);
+      padding: 16px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 280px;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .top-controls label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .timer-display {
+      font-size: 2.2rem;
+      margin: 15px 0;
+    }
+
+    select.dropdown {
+      margin-top: 10px;
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #2c2c40;
+      color: white;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .flashing-green {
+      background-color: green !important;
+      transition: background-color 0.5s ease !important;
+    }
+
+    @media screen and (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .page-title {
+        order: -1;
+        margin-bottom: 10px;
+      }
+
+      .timers {
+        flex-direction: column;
+        align-items: center;
+      }
+	  
+	  .button-group {
+		flex-direction: column;
+		}
+	}
+	
+	@media screen and (min-width: 768px) {	
+	  .page-title {
+		margin-left: 180px; /* adjust only on tablets and up */
+		}
+	}
+	
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+	<h1 class="page-title">Maplestory Interval Timer</h1>
+	<select id="bg-selector">
+		<option value="backgrounds/Lith Harbor.png">Lith Harbor</option>
+		<option value="backgrounds/Maple Tree.png">Maple Tree</option>
+		<option value="backgrounds/Florina Beach.png">Florina Beach</option>
+		<option value="backgrounds/Chimney Trees.png">Chimney Trees</option>
+		<option value="backgrounds/North Rocky Mountain.png">North Rocky Mountain</option>
+		<option value="backgrounds/Nautilus Harbor.png">Nautilus Harbor</option>
+		<option value="backgrounds/Cave of Life.png">Cave of Life</option>
+		<option value="backgrounds/Sleepywood.png">Sleepywood</option>
+		<option value="backgrounds/Cursed Temple.png">Cursed Temple</option>
+		<option value="backgrounds/Deep Sea Gorge.png">Deep Sea Gorge</option>
+		<option value="backgrounds/Temple of Time.png">Temple of Time</option>
+		<option value="backgrounds/Path of Time.png">Path of Time</option>
+		<option value="backgrounds/Ride to Orbis.png">Ride to Orbis</option>
+		<option value="backgrounds/El Nath.png">El Nath</option>
+		<option value="backgrounds/Ludibrium.png">Ludibrium</option>
+		<option value="backgrounds/Eos Tower.png">Eos Tower</option>
+		<option value="backgrounds/Leafre.png">Leafre</option>
+		<option value="backgrounds/Magatia.png">Magatia</option>
+		<option value="backgrounds/Nihal Desert.png">Nihal Desert</option>
+		<option value="backgrounds/Peach Farm.png">Peach Farm</option>
+		<option value="backgrounds/Midsummer Nights Forest.png">Midsummer Night's Forest</option>
+		<option value="backgrounds/Ellin Forest.png">Ellin Forest</option>
+		<option value="backgrounds/Ereve.png">Ereve</option>
+		<option value="backgrounds/Edelstein.png">Edelstein</option>
+		<option value="backgrounds/Vanishing Journey.png">Vanishing Journey</option>
+		<option value="backgrounds/Lachelein.png">Lachelein</option>
+		<option value="backgrounds/Grove of the Spirit Tree.png">Grove of the Spirit Tree</option>
+		<option value="backgrounds/Heart of the Forest.png">Heart of the Forest</option>
+		<option value="backgrounds/Coral Forest.png">Coral Forest</option>
+		<option value="backgrounds/Living Spring.png">Living Spring</option>
+		<option value="backgrounds/Sellas.png">Sellas</option>
+		<option value="backgrounds/Barrier Between Worlds.png">Barrier Between Worlds</option>
+		<option value="backgrounds/Royal Library.png">Royal Library</option>
+		<option value="backgrounds/Happyville.png">Happyville</option>
+    </select>
+  </div>
+
+	<div class="button-group">
+	  <div class="top-buttons">
+		<button onclick="addSkill()">+ Add Skill Timer</button>
+		<button onclick="clearAll()">Clear All Timers</button>
+		<button onclick="startAll()">Start All Timers</button>
+		<button onclick="stopAll()">Stop All Timers</button>
+	  </div>
+	</div>
+	<div class="mute-toggle">
+		<label><input type="checkbox" id="globalMute" /> Mute All Sounds</label>
+	</div>
+
+  <div class="timers" id="timers"></div>
+
+  <!-- Audio Elements (no changes needed) -->
+  <audio id="Bonk" src="sounds/Bonk.mp3" preload="auto"></audio>
+  <audio id="Bubbles" src="sounds/Bubbles.mp3" preload="auto"></audio>
+  <audio id="Glitter" src="sounds/Glitter.mp3" preload="auto"></audio>
+  <audio id="Level Up Alarm" src="sounds/Level Up Alarm.mp3" preload="auto"></audio>
+  <audio id="Level Up" src="sounds/Level Up.mp3" preload="auto"></audio>
+  <audio id="Looting" src="sounds/Looting.mp3" preload="auto"></audio>
+  <audio id="Pet Level Up" src="sounds/Pet Level Up.mp3" preload="auto"></audio>
+  <audio id="Quest Alert" src="sounds/Quest Alert.mp3" preload="auto"></audio>
+  <audio id="Quest Chime" src="sounds/Quest Chime.mp3" preload="auto"></audio>
+  <audio id="Select Map" src="sounds/Select Map.mp3" preload="auto"></audio>
+  <audio id="Zap" src="sounds/Zap.mp3" preload="auto"></audio>
+  
+<script>
+  const bgSelector = document.getElementById('bg-selector');
+  const timersContainer = document.getElementById("timers");
+  const muteToggle = document.getElementById("globalMute");
+  const savedBg = localStorage.getItem('background');
+
+  if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
+  bgSelector.value = savedBg || "";
+  bgSelector.addEventListener('change', () => {
+    const url = bgSelector.value;
+    document.body.style.backgroundImage = url ? `url('${url}')` : "";
+    localStorage.setItem('background', url);
+  });
+
+  let skills = JSON.parse(localStorage.getItem("skills")) || [];
+  let allSkillData = [];
+
+  function saveSkills() {
+    localStorage.setItem("skills", JSON.stringify(skills));
+  }
+
+  function addSkill(data) {
+    const name = data?.name || prompt("Enter skill name:");
+    const cooldown = data?.cooldown || parseInt(prompt("Enter cooldown in seconds:"), 10);
+    const sound = data?.sound || "Bonk";
+    if (!name || isNaN(cooldown)) return;
+    const skill = { name, cooldown, sound };
+    skills.push(skill);
+    saveSkills();
+    renderSkill(skill);
+  }
+
+  function renderSkill(skill) {
+    const { name } = skill;
+    let cooldown = skill.cooldown;
+    let sound = skill.sound;
+    let muted = false;
+    let withCountdown = false;
+    let timeLeft = cooldown;
+    let interval = null;
+    let volume = 0.1;
+
+    const skillDiv = document.createElement("div");
+    skillDiv.className = "skill";
+
+    const topControls = document.createElement("div");
+    topControls.className = "top-controls";
+
+    const muteSwitch = document.createElement("label");
+    muteSwitch.innerHTML = '<input type="checkbox"/> Mute';
+    muteSwitch.querySelector("input").onchange = e => {
+      muted = e.target.checked;
+    };
+
+    const countdownSwitch = document.createElement("label");
+    countdownSwitch.innerHTML = '<input type="checkbox"/> Countdown';
+    countdownSwitch.querySelector("input").onchange = e => withCountdown = e.target.checked;
+
+    topControls.appendChild(muteSwitch);
+    topControls.appendChild(countdownSwitch);
+    skillDiv.appendChild(topControls);
+
+    const title = document.createElement("h3");
+    title.textContent = name;
+    skillDiv.appendChild(title);
+
+    const timerText = document.createElement("div");
+    timerText.className = "timer-display";
+    timerText.textContent = cooldown + "s";
+    skillDiv.appendChild(timerText);
+
+    const countdownOverlay = document.createElement("div");
+    countdownOverlay.style = `position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;font-weight:bold;color:#fff;background:rgba(0,0,0,0.6);border-radius:12px;transition:opacity 0.5s ease;opacity:0;pointer-events:none;`;
+    skillDiv.appendChild(countdownOverlay);
+
+    const getSoundElement = () => {
+      const el = document.getElementById(sound) || document.getElementById("Bonk");
+      el.volume = volume;
+      return el;
+    };
+
+    const startBtn = document.createElement("button");
+    startBtn.textContent = "Start";
+    startBtn.onclick = () => {
+      if (interval) return;
+
+      const startTimer = () => {
+        interval = setInterval(() => {
+          timeLeft--;
+          if (timeLeft <= 0) {
+            // Reset timer at the top
+            if (!muteToggle.checked && !muted) {
+              getSoundElement().play();
+            }
+            timeLeft = cooldown;
+            timerText.textContent = cooldown + "s";
+
+            // Flash when timer resets if mute is on
+            if (muteToggle.checked || muted) {
+              flashGreen(skillDiv);
+            }
+          }
+          timerText.textContent = timeLeft + "s";
+        }, 1000);
+      };
+
+      if (withCountdown) {
+        let count = 3;
+        countdownOverlay.style.opacity = 1;
+        countdownOverlay.textContent = count;
+        const cd = setInterval(() => {
+          count--;
+          if (count <= 0) {
+            clearInterval(cd);
+            countdownOverlay.style.opacity = 0;
+            startTimer();
+          } else {
+            countdownOverlay.textContent = count;
+          }
+        }, 1000);
+      } else {
+        startTimer();
+      }
+    };
+
+    const stopBtn = document.createElement("button");
+    stopBtn.textContent = "Stop";
+    stopBtn.onclick = () => {
+      clearInterval(interval);
+      interval = null;
+      timeLeft = cooldown;
+      timerText.textContent = cooldown + "s";
+    };
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.onclick = () => {
+      const newCooldown = parseInt(prompt("New cooldown (seconds):", cooldown), 10);
+      if (!isNaN(newCooldown)) {
+        cooldown = newCooldown;
+        skill.cooldown = newCooldown;
+        timeLeft = newCooldown;
+        timerText.textContent = timeLeft + "s";
+        saveSkills();
+      }
+    };
+
+    const soundDropdown = document.createElement("select");
+    soundDropdown.className = "dropdown";
+    ["Bonk", "Bubbles", "Glitter", "Level Up Alarm", "Level Up", "Looting", "Pet Level Up", "Quest Alert", "Quest Chime", "Select Map", "Zap"].forEach(snd => {
+      const option = document.createElement("option");
+      option.value = snd;
+      option.textContent = snd;
+      if (snd === sound) option.selected = true;
+      soundDropdown.appendChild(option);
+    });
+    soundDropdown.onchange = e => {
+      sound = e.target.value;
+      skill.sound = sound;
+      saveSkills();
+    };
+
+    const testBtn = document.createElement("button");
+    testBtn.textContent = "Test Sound";
+    testBtn.classList.add("small-button");
+    testBtn.onclick = () => {
+      if (!muteToggle.checked && !muted) getSoundElement().play();
+    };
+
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.min = 0;
+    volumeSlider.max = 1;
+    volumeSlider.step = 0.01;
+    volumeSlider.value = volume;
+    volumeSlider.style.width = "100%";
+    volumeSlider.oninput = e => volume = parseFloat(e.target.value);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete Timer";
+    deleteBtn.classList.add("small-button");
+    deleteBtn.style.backgroundColor = "#ef4444";
+    deleteBtn.style.marginTop = "0px";
+    deleteBtn.onclick = () => {
+      clearInterval(interval);
+      skillDiv.remove();
+      skills = skills.filter(s => s !== skill);
+      saveSkills();
+    };
+
+    skillDiv.append(startBtn, stopBtn, editBtn, soundDropdown, testBtn, volumeSlider, deleteBtn);
+    timersContainer.appendChild(skillDiv);
+
+    allSkillData.push({
+      intervalRef: () => interval,
+      reset: () => {
+        clearInterval(interval);
+        interval = null;
+        timeLeft = cooldown;
+        timerText.textContent = cooldown + "s";
+      },
+      startBtn
+    });
+  }
+
+  function clearAll() {
+    skills = [];
+    saveSkills();
+    timersContainer.innerHTML = "";
+    allSkillData = [];
+  }
+
+  function startAll() {
+    allSkillData.forEach(data => {
+      if (!data.intervalRef()) data.startBtn.click();
+    });
+  }
+
+  function stopAll() {
+    allSkillData.forEach(data => data.reset());
+  }
+
+  // Function to flash the container green
+  function flashGreen(skillDiv) {
+    skillDiv.classList.add("flashing-green");
+    setTimeout(() => {
+      skillDiv.classList.remove("flashing-green");
+    }, 500); // Flash duration
+  }
+
+  window.onload = () => {
+    skills.forEach(renderSkill);
+    document.querySelectorAll("audio").forEach(audio => audio.volume = 0.1);
+  };
+</script>
+
+
+</body>
+</html>
