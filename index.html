@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Maplestory Interval Timer</title>
-  <link rel="icon" href="maplestory.ico" type="image/x-icon" />
+  <link rel="icon" href="PapulatusClock.ico" type="image/x-icon" />
   <style>
     :root {
       --primary: #3b82f6;
@@ -29,6 +29,23 @@
 	  color: var(--text-light);
 	  overflow: auto;
 	}
+	
+	*,
+	a,
+	input,
+	select,
+	textarea { 
+	   cursor: url('cursors/maplepoint.cur'), auto !important;
+	}
+	
+    body.clicked *,
+	body.clicked button,
+	body.clicked a,
+	body.clicked input,
+	body.clicked select,
+	body.clicked textarea {
+      cursor: url('cursors/maplepointlow.cur'), auto !important;
+    }
 
 	.top-bar {
 	  display: flex;
@@ -250,7 +267,6 @@
 
   <div class="timers" id="timers"></div>
 
-  <!-- Audio Elements (no changes needed) -->
   <audio id="Bonk" src="sounds/Bonk.mp3" preload="auto"></audio>
   <audio id="Bubbles" src="sounds/Bubbles.mp3" preload="auto"></audio>
   <audio id="Glitter" src="sounds/Glitter.mp3" preload="auto"></audio>
@@ -497,8 +513,13 @@
     skills.forEach(renderSkill);
     document.querySelectorAll("audio").forEach(audio => audio.volume = 0.1);
   };
+    document.body.addEventListener("mousedown", () => {
+    document.body.classList.add("clicked");
+  });
+
+  document.body.addEventListener("mouseup", () => {
+    document.body.classList.remove("clicked");
+  });
 </script>
-
-
 </body>
 </html>
