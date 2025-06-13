@@ -521,5 +521,20 @@
     document.body.classList.remove("clicked");
   });
 </script>
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('mapletimers', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Support me',
+    'floating-chat.donateButton.background-color': '#323842',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+<style>
+  #kofi-widget-overlay {
+    right: auto !important;
+    left: 20px !important;
+  }
+</style>
 </body>
 </html>
